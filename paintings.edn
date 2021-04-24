@@ -1,0 +1,29 @@
+{:paintings
+ [{:path "paintings/painting-0001.jpeg"
+   :caption ["Reproduction" "John Singer Sargent" "\"An Out-of-Doors Study\", 1889"]}
+  {:path "paintings/painting-0002.jpeg"
+   :caption ["Reproduction" "Caravaggio" "\"Narcissus\", 1599"]}
+  {:path "paintings/painting-0003.jpeg"
+   :caption ["Reproduction" "Rembrandt van Rijn" "\"Self-Portrait\", 1659"]}
+  {:path "paintings/painting-0004.jpeg"
+   :caption ["Reproduction" "John Singer Sargent" "\"Carnation, Lily, Lily, Rose\", 1885"]}
+  {:path "paintings/painting-0005.jpeg"
+   :caption ["Reproduction" "John Singer Sargent" "\"The Fountain\", 1907"]}
+  {:path "paintings/painting-0006.jpeg"
+   :caption ["Reproduction" "John Singer Sargent" "\"Fishing for Oysters at Cancale\", 1878"]}
+  {:path "paintings/painting-0007.jpeg"
+   :caption ["Cattedrale di Santa Maria del Fiore (Florence)"]}
+  {:path "paintings/painting-0008.jpeg"
+   :caption ["Old man" "Picture by Kevin Kelly" "in Asia Grace"]}
+  {:path "paintings/painting-0009.jpeg"
+   :caption ["Trixie"]}
+  {:path "paintings/painting-0010.jpeg"
+   :caption ["Lilies"]}
+  {:path "paintings/painting-0011.jpeg"
+   :caption ["Reproduction" "John Singer Sargent" "\"Head of an Arab\", 1891"]}
+  {:path "paintings/painting-0012.jpeg"
+   :caption ["My grandmother, Marie Thérèse"]}
+  {:path "paintings/painting-0013.jpeg"
+   :caption ["My daughter, Penelope"]}
+  {:path "paintings/painting-0014.jpeg"
+   :caption ["Reproduction" "John Singer Sargent" "\"A Bedouin Arab\", 1891"]}]}
