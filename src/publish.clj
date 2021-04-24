@@ -1,8 +1,9 @@
 (ns publish
-  (:require [clojure.edn :as edn]
+  (:require [clojure.string :as str]
+            [clojure.edn :as edn]
             [clojure.java.io :as io]
             [clojure.java.shell :refer [sh]]
-            [hiccup.core :as html])
+            [hiccup.page :as html])
   (:import [java.util Base64]
            [java.io ByteArrayOutputStream]))
 
@@ -66,31 +67,36 @@
 
 (defn publish
   []
-  (html/html
-   [:html
-    [:head
-     [:meta {:charset "UTF-8"}]
-     [:meta {:name "viewport" :content "width=device-wdith, initial-scale=1"}]
-     [:style {:type "text/css"}
-      (slurp (io/resource "styles.css"))]]
-    [:body
-     [:h1
-      [:a {:href "http://benfle.com"}
-       "BENOIT FLEURY"]]
-     [:p {:class "subtitle"}
-      "Paintings"]
-     [:div {:id "paintings"}
-      (->> paintings
-           reverse
-           ensure-images
-           (map (fn [{:keys [path caption thumbnail-b64]}]
-                  [:figure {:class "painting"}
-                   [:a {:href path}
-                    [:img {:src (str "data:image/jpeg;base64," thumbnail-b64)}
-                     [:figcaption
-                      (map (fn [line]
-                             [:span {:class "line"} line])
-                           caption)]]]])))]]]))
+  (html/html5
+   {:lang "en"}
+   [:head
+    [:title "Benoit Fleury - Paintings"]
+    [:meta {:name "description"
+            :content "A gallery of Benoit Fleury's oil paintings."}]
+    [:meta {:charset "UTF-8"}]
+    [:meta {:name "viewport"
+            :content "width=device-width, initial-scale=1"}]
+    [:style {:type "text/css"}
+     (slurp (io/resource "styles.css"))]]
+   [:body
+    [:h1
+     [:a {:href "http://benfle.com"}
+      "BENOIT FLEURY"]]
+    [:p {:class "subtitle"}
+     "Paintings"]
+    [:div {:id "paintings"}
+     (->> paintings
+          reverse
+          ensure-images
+          (map (fn [{:keys [path caption thumbnail-b64]}]
+                 [:figure {:class "painting"}
+                  [:a {:href path}
+                   [:img {:src (str "data:image/jpeg;base64," thumbnail-b64)
+                          :alt (str/join ", " caption)}
+                    [:figcaption
+                     (map (fn [line]
+                            [:span {:class "line"} line])
+                          caption)]]]])))]]))
 
 (defn -main
   [& args]
