@@ -23,9 +23,9 @@
    {:path "paintings/painting-0007.jpeg"
     :caption ["Cattedrale di Santa Maria del Fiore (Florence)"]}
    {:path "paintings/painting-0008.jpeg"
-    :caption ["Old man" "Picture by Kevin Kelly" "in Asia Grace"]}
+    :caption ["Old man" "Photograph by Kevin Kelly" "in Asia Grace"]}
    {:path "paintings/painting-0009.jpeg"
-    :caption ["Trixie"]}
+    :caption ["My dog, Trixie"]}
    {:path "paintings/painting-0010.jpeg"
     :caption ["Lilies"]}
    {:path "paintings/painting-0011.jpeg"
@@ -35,7 +35,15 @@
    {:path "paintings/painting-0013.jpeg"
     :caption ["My daughter, Penelope"]}
    {:path "paintings/painting-0014.jpeg"
-    :caption ["Reproduction" "John Singer Sargent" "\"A Bedouin Arab\", 1891"]}])
+    :caption ["Reproduction" "John Singer Sargent" "\"A Bedouin Arab\", 1891"]}
+   {:path "paintings/painting-0015.jpeg"
+    :caption ["Lord Bertrand Russel" "Photograph by Yousuf Karsh, 1949"]}
+   {:path "paintings/painting-0016.jpeg"
+    :caption ["The painter at a young age" "Photograph, 1986"]}
+   {:path "paintings/painting-0017.jpeg"
+    :caption ["Photograph by Amy Carroll, 2022"]}
+   {:path "paintings/painting-0018.jpeg"
+    :caption ["A rose in the wild"]}])
 
 (defn file->bytes
   [file]
