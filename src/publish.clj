@@ -21,29 +21,29 @@
    {:path "paintings/painting-0006.jpeg"
     :caption ["Reproduction" "John Singer Sargent" "\"Fishing for Oysters at Cancale\", 1878"]}
    {:path "paintings/painting-0007.jpeg"
-    :caption ["Cattedrale di Santa Maria del Fiore (Florence)"]}
+    :caption ["Florence Cathedral"]}
    {:path "paintings/painting-0008.jpeg"
     :caption ["Old man" "Photograph by Kevin Kelly" "in Asia Grace"]}
    {:path "paintings/painting-0009.jpeg"
-    :caption ["My dog, Trixie"]}
+    :caption ["Trixie"]}
    {:path "paintings/painting-0010.jpeg"
     :caption ["Lilies"]}
    {:path "paintings/painting-0011.jpeg"
     :caption ["Reproduction" "John Singer Sargent" "\"Head of an Arab\", 1891"]}
    {:path "paintings/painting-0012.jpeg"
-    :caption ["My grandmother, Marie Thérèse"]}
+    :caption ["Marie Thérèse"]}
    {:path "paintings/painting-0013.jpeg"
-    :caption ["My daughter, Penelope"]}
+    :caption ["Penelope"]}
    {:path "paintings/painting-0014.jpeg"
     :caption ["Reproduction" "John Singer Sargent" "\"A Bedouin Arab\", 1891"]}
    {:path "paintings/painting-0015.jpeg"
     :caption ["Lord Bertrand Russel" "Photograph by Yousuf Karsh, 1949"]}
    {:path "paintings/painting-0016.jpeg"
-    :caption ["The painter at a young age" "Photograph, 1986"]}
+    :caption ["A portrait of the artist as a young man." "Photograph, 1986"]}
    {:path "paintings/painting-0017.jpeg"
     :caption ["Photograph by Amy Carroll, 2022"]}
    {:path "paintings/painting-0018.jpeg"
-    :caption ["A rose in the wild"]}])
+    :caption ["Rose"]}])
 
 (defn file->bytes
   [file]
@@ -75,44 +75,49 @@
 
 (defn publish
   []
-  (html/html5
-   {:lang "en"}
-   [:head
-    [:title "Benoit Fleury - Paintings"]
-    [:meta {:name "description"
-            :content "A gallery of Benoit Fleury's oil paintings."}]
-    [:meta {:charset "UTF-8"}]
-    [:meta {:name "viewport"
-            :content "width=device-width, initial-scale=1"}]
-    [:style {:type "text/css"}
-     (slurp (io/resource "styles.css"))]]
-   [:body
-    [:h1
-     [:a {:href "http://benfle.com"}
-      "BENOIT FLEURY"]]
-    [:p {:class "subtitle"}
-     "Paintings"]
-    [:div {:id "paintings"}
-     (->> paintings
-          reverse
-          ensure-images
-          (map (fn [{:keys [path caption thumbnail-b64]}]
-                 [:figure {:class "painting"}
-                  [:a {:href path}
-                   [:img {:src (str "data:image/jpeg;base64," thumbnail-b64)
-                          :alt (str/join ", " caption)}
-                    [:figcaption
-                     (map (fn [line]
-                            [:span {:class "line"} line])
-                          caption)]]]])))]
-    [:script
-     "(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-      ga('create', 'UA-44073995-1', 'benfle.com');
-      ga('send', 'pageview');"]]))
+  (let [root-url "https://benfle.com"]
+    (html/html5
+     {:lang "en"}
+     [:head
+      [:title "Benoît Fleury - Paintings"]
+      [:meta {:name "description"
+              :content "A gallery of Benoit Fleury's oil paintings."}]
+      [:meta {:charset "UTF-8"}]
+      [:meta {:name "viewport"
+              :content "width=device-width, initial-scale=1"}]
+      [:style {:type "text/css"}
+       (slurp (io/resource "styles.css"))]]
+     [:body
+
+      [:header
+       [:h1
+        [:a {:href root-url}
+         "Benoît Fleury"]]
+       [:nav.menu
+        [:ul
+         [:li [:a {:href (str root-url "/software")} "Software"]]
+         [:li [:a.selected {:href (str root-url "/paintings")} "Paintings"]]
+         [:li [:a {:href (str root-url "/readings")} "Readings"]]]]]
+
+      [:div#content
+       (->> paintings
+            reverse
+            ensure-images
+            (map (fn [{:keys [path caption thumbnail-b64]}]
+                   [:a {:href path}
+                    [:figure {:class "painting"}
+                     [:img {:src (str "data:image/jpeg;base64," thumbnail-b64)
+                            :alt (str/join ", " caption)}]
+                     [:figcaption
+                      (map (fn [line]
+                             [:span {:class "line"} line])
+                           caption)]]])))]
+
+      [:footer
+       [:p "© 2012-2025 Benoît Fleury"]
+       [:p "Last updated in June 2025"]]])))
 
 (defn -main
   [& args]
-  (spit "index.html" (publish)))
+  (spit "index.html"
+        (publish)))
