@@ -45,46 +45,20 @@
    {:path "paintings/painting-0018.jpeg"
     :caption ["Rose"]}])
 
-(defn file->bytes
-  [file]
-  (with-open [in (io/input-stream file)
-              out (ByteArrayOutputStream.)]
-    (io/copy in out)
-    (.toByteArray out)))
-
-(defn ensure-images
-  "Ensure the original and thumbnail images exist.
-
-  Add the thumbnail bytes as Base64 string to each painting map."
-  [paintings]
-  (->> paintings
-       (map (fn [painting]
-              (let [original (io/file (:path painting))
-                    thumbnail (io/file "./thumbnails" (.getName original))]
-                (when (not (.exists original))
-                  (throw (ex-info "Original not found." painting)))
-                (when (not (.exists thumbnail))
-                  (let [args [(.getPath original) "-resize" "200x200" (.getPath thumbnail)]
-                        {:keys [exit err]} (apply sh "convert" args)]
-                    (when (not (= 0 exit))
-                      (throw (ex-info "Error generating the thumbnail."
-                                      {:err err})))))
-                (assoc painting :thumbnail-b64 (.encodeToString (Base64/getEncoder)
-                                                                (file->bytes thumbnail))))))
-       doall))
-
 (defn publish
   []
   (let [root-url "https://benfle.com"]
     (html/html5
      {:lang "en"}
      [:head
-      [:title "Benoît Fleury - Paintings"]
-      [:meta {:name "description"
-              :content "A gallery of Benoit Fleury's oil paintings."}]
       [:meta {:charset "UTF-8"}]
       [:meta {:name "viewport"
               :content "width=device-width, initial-scale=1"}]
+      [:title "Benoît Fleury - Oil Paintings"]
+      [:meta {:name "author"
+              :content "Benoît Fleury"}]
+      [:meta {:name "description"
+              :content "A gallery of Benoit Fleury's oil paintings."}]
       [:style {:type "text/css"}
        (slurp (io/resource "styles.css"))]]
      [:body
@@ -92,30 +66,27 @@
       [:header
        [:h1
         [:a {:href root-url}
-         "Benoît Fleury"]]
-       [:nav.menu
-        [:ul
-         [:li [:a {:href (str root-url "/software")} "Software"]]
-         [:li [:a.selected {:href (str root-url "/paintings")} "Paintings"]]
-         [:li [:a {:href (str root-url "/readings")} "Readings"]]]]]
+         "Benoît Fleury"]
+        "Oil Paintings"]]
 
-      [:div#content
-       (->> paintings
-            reverse
-            ensure-images
-            (map (fn [{:keys [path caption thumbnail-b64]}]
-                   [:a {:href path}
-                    [:figure {:class "painting"}
-                     [:img {:src (str "data:image/jpeg;base64," thumbnail-b64)
-                            :alt (str/join ", " caption)}]
-                     [:figcaption
-                      (map (fn [line]
-                             [:span {:class "line"} line])
-                           caption)]]])))]
+      [:article
+       [:p
+        "I started oil painting in 2018 thanks to "
+        [:a {:href "https://www.drawmixpaint.com/"}
+         "Mark Carder's Draw Mix Paint method"]
+        "."]
 
-      [:footer
-       [:p "© 2012-2025 Benoît Fleury"]
-       [:p "Last updated in June 2025"]]])))
+       [:div#paintings
+        (->> paintings
+             reverse
+             (map (fn [{:keys [path caption thumbnail-b64]}]
+                    [:a {:href path}
+                     [:figure {:class "painting"}
+                      [:img {:src path
+                             :alt (str/join ", " caption)}]
+                      [:figcaption
+                       (map (fn [line] [:span.line line])
+                            caption)]]])))]]])))
 
 (defn -main
   [& args]
